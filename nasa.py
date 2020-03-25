@@ -6,7 +6,7 @@ import requests
 import time
 import datetime
 
-#pimport icalendar
+#import icalendar
 
 # debugging
 from termcolor import colored
@@ -14,11 +14,32 @@ import sys
 
 # user location
 import geopy.distance #from geopy.distance import vincenty
+from geopy.geocoders import Nominatim
 import geocoder
+
+# parse arguments
+import argparse
+
+city_input = False
+city = ''
 
 user_lat = 0
 user_lon = 0 
+
 distance_arr = []
+
+
+## parse Input City:
+parser = argparse.ArgumentParser(description='INPUT CITY')
+
+parser.add_argument('-city', nargs='?', default='none', help = "Input City [if city-name contains spaces please use apostrophes example: 'New York City' ")
+args = parser.parse_args()
+
+if args.city != 'none': 
+	city_input = True
+	city = args.city
+
+	print('Input City: '+  colored(city,'green'))
 
 
 def iss_data(data):
@@ -53,7 +74,15 @@ def calculate_distance(iss_lat, iss_lon, user_lat, user_lon):
 
 	return distance # new distance not global
 
+def city_coordinates(city):
 
+	geolocator = Nominatim(user_agent="my-application")
+	loc = geolocator.geocode(city)
+	## input city lat and lon:
+	#print(loc.latitude)
+	#print(loc.longitude)
+
+	return loc.latitude, loc.longitude
 
 def init():
 	global user_lat,user_lon
@@ -63,11 +92,23 @@ def init():
 	if data['message'] == 'success':
 		print(colored('SUCCESS','green'))
 		iss_lat, iss_lon   = iss_data(data)
-		if user_lat == 0 and user_lon == 0:
-			user_lat, user_lon = user_position()
+		
+		if city_input == False: # get user position
+			if user_lat == 0 and user_lon == 0:
+				user_lat, user_lon = user_position()
+
+		else: 
+			if user_lat == 0 and user_lon == 0:
+				user_lat, user_lon = city_coordinates(city)
 
 		distance_new = calculate_distance(iss_lat, iss_lon, user_lat,user_lon)
 		distance_arr.append(distance_new)	
+
+		## follow here: 
+		##  https://www.youtube.com/watch?v=8v3how07th4
+		## or 
+		## this
+		## https://python-graph-gallery.com/310-basic-map-with-markers/		
 	
 	else:
 		print(colored('Something went wrong requesting ISS data:','red'))
