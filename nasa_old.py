@@ -20,14 +20,6 @@ import geocoder
 # parse arguments
 import argparse
 
-# mapping implementation
-import map_it
-
-import cartopy.crs as ccrs
-import matplotlib.pyplot as plt
-
-
-
 city_input = False
 city = ''
 
@@ -80,7 +72,7 @@ def calculate_distance(iss_lat, iss_lon, user_lat, user_lon):
 	distance = geopy.distance.geodesic((iss_lat,iss_lon), (user_lat, user_lon)).meters
 	print(distance, 'kilometers')
 
-	return distance # new distance 
+	return distance # new distance not global
 
 def city_coordinates(city):
 
@@ -109,15 +101,15 @@ def init():
 			if user_lat == 0 and user_lon == 0:
 				user_lat, user_lon = city_coordinates(city)
 
-		'''
 		distance_new = calculate_distance(iss_lat, iss_lon, user_lat,user_lon)
 		distance_arr.append(distance_new)	
-		'''
-		
-		map_it.plot_it(p_,iss_lat, iss_lon,user_lat, user_lon)
-		plt.show()
 
-
+		## follow here: 
+		##  https://www.youtube.com/watch?v=8v3how07th4
+		## or 
+		## this
+		## https://python-graph-gallery.com/310-basic-map-with-markers/		
+	
 	else:
 		print(colored('Something went wrong requesting ISS data:','red'))
 		print(data)
