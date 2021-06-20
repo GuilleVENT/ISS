@@ -1,7 +1,7 @@
 # Interantional Space Station - Tracker and Notifier 
 
 
-## The ISS is pretty cool, check out it's history [here!](https://www.issnationallab.org/about/iss-timeline/#:~:text=The%20first%20rudimentary%20station%20was,ever%20developed%3A%20the%20American%20shuttles.)
+#### The ISS is pretty cool, check out it's history [here!](https://www.issnationallab.org/about/iss-timeline/#:~:text=The%20first%20rudimentary%20station%20was,ever%20developed%3A%20the%20American%20shuttles.)
 
 Well this python script tracks the ISS in the sky and notifies you when it will pass on top of you. It shows you a map with your position and the position of the ISS) and it adds events in your iCalendar for when it will pass.
 
